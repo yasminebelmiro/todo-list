@@ -1,4 +1,4 @@
-package com.yasminebelmiro.entity;
+package com.yasminebelmiro.todo_list.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

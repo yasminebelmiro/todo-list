@@ -1,12 +1,14 @@
-package com.yasminebelmiro.service;
+package com.yasminebelmiro.todo_list.service;
 
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
-import com.yasminebelmiro.entity.Todo;
-import com.yasminebelmiro.repository.TodoRepository;
+import com.yasminebelmiro.todo_list.entity.Todo;
+import com.yasminebelmiro.todo_list.repository.TodoRepository;
 
+@Service
 public class TodoService {
     private TodoRepository todoRepository;
 
