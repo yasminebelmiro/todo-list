@@ -13,6 +13,7 @@ import com.yasminebelmiro.todo_list.entity.Task;
 import com.yasminebelmiro.todo_list.entity.User;
 import com.yasminebelmiro.todo_list.mapper.TaskMapper;
 import com.yasminebelmiro.todo_list.repository.TaskRepository;
+import com.yasminebelmiro.todo_list.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -20,18 +21,18 @@ import jakarta.transaction.Transactional;
 public class TaskService {
     private static final Logger logger = Logger.getLogger(TaskService.class.getName());
     private final TaskRepository todoRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final TaskMapper mapper;
 
-    public TaskService(TaskRepository todoRepository, UserService userService, TaskMapper mapper) {
+    public TaskService(TaskRepository todoRepository, UserRepository userRepository, TaskMapper mapper) {
         this.todoRepository = todoRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
     public TaskResponseDTO create(Task todo, Long userId) {
         logger.info("Criando todo para o usuário: " + userId);
-        User user = userService.getById(userId);
+        User user = userRepository.findByIdOrThrow(userId);
         todo.setUser(user);
         Task savedTask = todoRepository.save(todo);
         return mapper.toResponse(savedTask);
