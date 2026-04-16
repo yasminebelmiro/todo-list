@@ -1,5 +1,5 @@
 package com.yasminebelmiro.todo_list.dto.response;
 
-public record UserResponseDTO(Long id, String nome, String email) {
+public record UserResponseDTO(Long id, String name, String email) {
     
 }

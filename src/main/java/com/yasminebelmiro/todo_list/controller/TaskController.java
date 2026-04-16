@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,13 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yasminebelmiro.todo_list.dto.request.TaskRequestDTO;
 import com.yasminebelmiro.todo_list.dto.response.StatusTaskResponseDTO;
 import com.yasminebelmiro.todo_list.dto.response.TaskResponseDTO;
-import com.yasminebelmiro.todo_list.entity.Task;
 import com.yasminebelmiro.todo_list.service.TaskService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/tasks")
+@Validated
 public class TaskController {
     private TaskService todoService;
 
@@ -29,8 +33,8 @@ public class TaskController {
     }
 
     @PostMapping("/{userId}")
-    ResponseEntity<TaskResponseDTO> create(@PathVariable Long userId, @RequestBody Task todo) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(todoService.create(todo, userId));
+    ResponseEntity<TaskResponseDTO> create(@PathVariable Long userId, @Valid @RequestBody TaskRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(todoService.create(dto, userId));
     }
 
     @GetMapping("/{userId}")
@@ -39,8 +43,8 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<TaskResponseDTO> update(@PathVariable Long id, @RequestBody Task todo) {
-        return ResponseEntity.ok(todoService.update(id, todo));
+    ResponseEntity<TaskResponseDTO> update(@PathVariable Long id, @Valid @RequestBody TaskRequestDTO dto) {
+        return ResponseEntity.ok(todoService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
@@ -54,5 +58,5 @@ public class TaskController {
         return ResponseEntity.ok(todoService.atualizarStatus(id));
     }
 
-    //listar por realizadas //listar não realizadas
+    // listar por realizadas //listar não realizadas
 }

@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
 
+import com.yasminebelmiro.todo_list.dto.request.UserRequestDTO;
 import com.yasminebelmiro.todo_list.dto.response.UserResponseDTO;
 import com.yasminebelmiro.todo_list.entity.User;
 import com.yasminebelmiro.todo_list.mapper.UserMapper;
@@ -21,8 +22,9 @@ public class UserService {
         this.mapper = mapper;
     }
 
-    public UserResponseDTO create(User user) {
-        logger.info("Criando usuário: " + user.getName());
+    public UserResponseDTO create(UserRequestDTO dto) {
+        logger.info("Criando usuário: " + dto.name());
+        User user = mapper.toEntity(dto);
         User savedUser = userRepository.save(user);
         return mapper.toResponse(savedUser);
     }
@@ -39,11 +41,11 @@ public class UserService {
         return mapper.toResponse(user);
     }
 
-    public UserResponseDTO update(Long id, User user) {
+    public UserResponseDTO update(Long id, UserRequestDTO dto) {
         logger.info("Atualizando usuário com id: " + id);
-        User existingUser = userRepository.findByIdOrThrow(id);
-        existingUser.setName(user.getName());
-        existingUser.setEmail(user.getEmail());
+        userRepository.findByIdOrThrow(id);
+        User existingUser = mapper.toEntity(dto);
+        existingUser.setId(id);
         User updatedUser = userRepository.save(existingUser);
         return mapper.toResponse(updatedUser);
     }

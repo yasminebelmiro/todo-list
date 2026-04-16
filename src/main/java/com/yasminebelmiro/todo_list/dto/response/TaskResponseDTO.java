@@ -18,4 +18,5 @@ public record TaskResponseDTO(
                 task.getPrioridade(),
                 task.getUser().getId());
     }
+
 }

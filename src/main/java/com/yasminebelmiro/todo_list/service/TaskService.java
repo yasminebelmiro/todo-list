@@ -3,10 +3,10 @@ package com.yasminebelmiro.todo_list.service;
 import java.util.List;
 import java.util.logging.Logger;
 
-
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.yasminebelmiro.todo_list.dto.request.TaskRequestDTO;
 import com.yasminebelmiro.todo_list.dto.response.StatusTaskResponseDTO;
 import com.yasminebelmiro.todo_list.dto.response.TaskResponseDTO;
 import com.yasminebelmiro.todo_list.entity.Task;
@@ -30,36 +30,34 @@ public class TaskService {
         this.mapper = mapper;
     }
 
-    public TaskResponseDTO create(Task todo, Long userId) {
+    public TaskResponseDTO create(TaskRequestDTO dto, Long userId) {
         logger.info("Criando todo para o usuário: " + userId);
         User user = userRepository.findByIdOrThrow(userId);
-        todo.setUser(user);
-        Task savedTask = todoRepository.save(todo);
+        Task task = mapper.toEntity(dto);
+        task.setUser(user);
+        Task savedTask = todoRepository.save(task);
         return mapper.toResponse(savedTask);
     }
 
-    public List<TaskResponseDTO>listByUserIdOrdenedByPrioridade(Long userId) {
+    public List<TaskResponseDTO> listByUserIdOrdenedByPrioridade(Long userId) {
         logger.info("Listando to-do's ordenadas por prioridade");
         Sort sort = Sort.by("prioridade").ascending().and(Sort.by("nome").ascending());
         List<Task> tasks = todoRepository.findByUserId(userId, sort);
         return mapper.toResponseList(tasks);
     }
 
-    public TaskResponseDTO update(Long id, Task todo) {
+    public TaskResponseDTO update(Long id, TaskRequestDTO dto) {
 
         logger.info("Atualizando to-do com id: " + id);
-        Task updatedTask = todoRepository.findByIdOrThrow(id);
-
-        updatedTask.setNome(todo.getNome());
-        updatedTask.setDescricao(todo.getDescricao());
-        updatedTask.setPrioridade(todo.getPrioridade());
-        updatedTask.setRealizada(todo.isRealizada());
+        todoRepository.findByIdOrThrow(id);
+        Task updatedTask = mapper.toEntity(dto);
+        updatedTask.setId(id);
         Task savedTask = todoRepository.save(updatedTask);
         return mapper.toResponse(savedTask);
     }
 
     public void delete(Long id) {
-          logger.info("Deletando to-do com id: " + id);
+        logger.info("Deletando to-do com id: " + id);
         Task todoToDelete = todoRepository.findByIdOrThrow(id);
         todoRepository.delete(todoToDelete);
     }

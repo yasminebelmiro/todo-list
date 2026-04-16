@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yasminebelmiro.todo_list.dto.request.UserRequestDTO;
 import com.yasminebelmiro.todo_list.dto.response.UserResponseDTO;
-import com.yasminebelmiro.todo_list.entity.User;
 import com.yasminebelmiro.todo_list.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -27,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> create(@RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(user));
+    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(dto));
     }
 
     @GetMapping
@@ -42,8 +44,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody User user) {
-        return ResponseEntity.ok(userService.update(id, user));
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id,@Valid @RequestBody UserRequestDTO dto) {
+        return ResponseEntity.ok(userService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
