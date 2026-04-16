@@ -3,6 +3,7 @@ package com.yasminebelmiro.todo_list.service;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.yasminebelmiro.todo_list.dto.request.UserRequestDTO;
@@ -16,15 +17,19 @@ public class UserService {
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
     private final UserRepository userRepository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserMapper mapper) {
+    public UserService(UserRepository userRepository, UserMapper mapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponseDTO create(UserRequestDTO dto) {
         logger.info("Criando usuário: " + dto.name());
         User user = mapper.toEntity(dto);
+        String encodedPassword = passwordEncoder.encode(dto.password()); 
+        user.setPassword(encodedPassword);
         User savedUser = userRepository.save(user);
         return mapper.toResponse(savedUser);
     }
