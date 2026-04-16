@@ -15,7 +15,7 @@ import com.yasminebelmiro.todo_list.entity.User;
 
 @Service
 public class TokenService {
-    @Value("{api.security.token.secret}")
+    @Value("${api.security.token.secret}")
     String secret;
 
     public String generateToken(User user) {
