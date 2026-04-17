@@ -35,11 +35,11 @@ public class TaskService {
         this.mapper = mapper;
     }
 
-    public TaskResponseDTO create(TaskRequestDTO dto, Long userId) {
+    public TaskResponseDTO create(TaskRequestDTO dto, Long userId, Long taskListId) {
         logger.info("Criando todo para o usuário: " + userId);
         User user = userRepository.findByIdOrThrow(userId);
         Task task = mapper.toEntity(dto);
-        TaskList taskList = taskListRepository.findByIdOrThrow(dto.taskListId());
+        TaskList taskList = taskListRepository.findByIdOrThrow(taskListId);
         task.setUser(user);
         task.setTaskList(taskList);
         Task savedTask = todoRepository.save(task);
@@ -50,6 +50,12 @@ public class TaskService {
         logger.info("Listando to-do's ordenadas por prioridade");
         Sort sort = Sort.by("priority").descending();
         List<Task> tasks = todoRepository.findByUserId(userId, sort);
+        return mapper.toResponseList(tasks);
+    }
+
+    public List<TaskResponseDTO> listByTaskListId(Long taskListId) {
+        logger.info("Listando to-do's por task list id: " + taskListId);
+        List<Task> tasks = todoRepository.findByTaskListId(taskListId);
         return mapper.toResponseList(tasks);
     }
 

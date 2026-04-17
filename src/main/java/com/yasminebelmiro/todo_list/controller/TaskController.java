@@ -32,14 +32,19 @@ public class TaskController {
         this.todoService = todoService;
     }
 
-    @PostMapping("/{userId}")
-    ResponseEntity<TaskResponseDTO> create(@PathVariable Long userId, @Valid @RequestBody TaskRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(todoService.create(dto, userId));
+    @PostMapping("/user-{userId}/tasklist-{taskListId}")
+    ResponseEntity<TaskResponseDTO> create(@PathVariable Long userId, @PathVariable Long taskListId, @Valid @RequestBody TaskRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(todoService.create(dto, userId, taskListId));
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user-{userId}")
     ResponseEntity<List<TaskResponseDTO>> listByUserIdOrdenedByPrioridade(@PathVariable Long userId) {
         return ResponseEntity.ok(todoService.listByUserIdOrdenedByPrioridade(userId));
+    }
+
+    @GetMapping("/tasklist-{taskListId}")
+    ResponseEntity<List<TaskResponseDTO>> listByTaskListId(@PathVariable Long taskListId) {
+        return ResponseEntity.ok(todoService.listByTaskListId(taskListId));
     }
 
     @PutMapping("/{id}")

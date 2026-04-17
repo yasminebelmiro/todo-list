@@ -28,7 +28,7 @@ public class UserService {
     public UserResponseDTO create(UserRequestDTO dto) {
         logger.info("Criando usuário: " + dto.name());
         User user = mapper.toEntity(dto);
-        String encodedPassword = passwordEncoder.encode(dto.password()); 
+        String encodedPassword = passwordEncoder.encode(dto.password());
         user.setPassword(encodedPassword);
         User savedUser = userRepository.save(user);
         return mapper.toResponse(savedUser);
@@ -49,11 +49,10 @@ public class UserService {
     public UserResponseDTO update(Long id, UserRequestDTO dto) {
         logger.info("Atualizando usuário com id: " + id);
         User user = userRepository.findByIdOrThrow(id);
-        String encodedPassword = passwordEncoder.encode(dto.password()); 
-        user.setPassword(encodedPassword);
-        User existingUser = mapper.toEntity(dto);
-        existingUser.setId(id);
-        User updatedUser = userRepository.save(existingUser);
+        user.setName(dto.name());
+        user.setEmail(dto.email());
+        user.setPassword(passwordEncoder.encode(dto.password()));
+        User updatedUser = userRepository.save(user);
         return mapper.toResponse(updatedUser);
     }
 

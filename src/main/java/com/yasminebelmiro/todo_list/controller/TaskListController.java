@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +19,11 @@ import com.yasminebelmiro.todo_list.dto.response.TaskListResponseDTO;
 import com.yasminebelmiro.todo_list.service.TaskListService;
 
 import jakarta.validation.Valid;
-import lombok.Delegate;
+
 
 @RestController
 @RequestMapping("/task-lists")
+@Validated
 public class TaskListController {
 
     private final TaskListService taskListService;
@@ -30,12 +32,12 @@ public class TaskListController {
         this.taskListService = taskListService;
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/user-{userId}")
     ResponseEntity<TaskListResponseDTO> create(@PathVariable Long userId, @Valid @RequestBody TaskListRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskListService.create(dto, userId));
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user-{userId}")
     ResponseEntity<List<TaskListResponseDTO>> listByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(taskListService.listByUserId(userId));
     }

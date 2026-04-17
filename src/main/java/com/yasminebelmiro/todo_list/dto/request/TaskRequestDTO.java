@@ -12,7 +12,6 @@ public record TaskRequestDTO(
         @NotBlank(message = "O nome da tarefa é obrigatório")
         @Size(min = 1, max = 100, message = "O nome da tarefa deve conter entre 3 e 100 caracteres")
         String name,
-        @Size(min = 1, max = 100, message = "A descrição da tarefa deve conter entre 3 e 100 caracteres")
         String description,
         @NotNull(message = "A prioridade da tarefa é obrigatória")
        PriorityEnum priority,
