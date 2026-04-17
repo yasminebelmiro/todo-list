@@ -26,16 +26,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf -> csrf.disable()) // Desativamos o CSRF porque vamos usar JWT
+        
+                .csrf(csrf -> csrf.disable()) 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // A nossa API é Stateless (não guarda sessão)
                 .authorizeHttpRequests(authorize -> authorize
-                        // Quais rotas são públicas? (Qualquer pessoa pode aceder)
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll() // Rota para fazer login
                         .requestMatchers(HttpMethod.POST, "/users").permitAll() // Rota para criar um novo utilizador
-                        // Quaisquer outras rotas requerem autenticação (precisam do Token)
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
-                // Adicionamos o nosso filtro antes do filtro padrão do Spring
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -47,7 +46,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Encriptador de passwords (para não guardarmos passwords em texto limpo na base de dados)
         return new BCryptPasswordEncoder();
     }
 }

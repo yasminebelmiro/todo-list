@@ -42,7 +42,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         public final ResponseEntity<ExceptionResponse> handleConstraintViolation(
                         ConstraintViolationException ex, WebRequest request) {
                 String mensagemLimpa = ex.getMessage();
-                // Se você quiser limpar o nome do método e deixar só a mensagem:
                 if (mensagemLimpa.contains(": ")) {
                         mensagemLimpa = mensagemLimpa.split(": ")[1];
                 }

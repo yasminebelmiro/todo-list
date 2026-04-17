@@ -48,7 +48,7 @@ public class TaskService {
 
     public List<TaskResponseDTO> listByUserIdOrdenedByPrioridade(Long userId) {
         logger.info("Listando to-do's ordenadas por prioridade");
-        Sort sort = Sort.by("prioridade").descending();
+        Sort sort = Sort.by("priority").descending();
         List<Task> tasks = todoRepository.findByUserId(userId, sort);
         return mapper.toResponseList(tasks);
     }

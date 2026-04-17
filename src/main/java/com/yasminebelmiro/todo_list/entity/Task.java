@@ -46,17 +46,6 @@ public class Task implements Serializable {
     private TaskList taskList;
     private Date createdAt;
 
-    public Task() {
-    }
-
-    public Task(String description, Long id, String name, PriorityEnum priority, boolean completed) {
-        this.description = description;
-        this.id = id;
-        this.name = name;
-        this.priority = priority;
-        this.completed = completed;
-    }
-
     public void atualizarStatus() {
         this.completed = !this.completed;
     }

@@ -27,16 +27,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data) {
-        // Cria um token provisório com os dados que vieram do Postman
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         
-        // O AuthenticationManager vai automaticamente chamar o AuthorizationService (Passo 7) e validar a password
         var auth = this.authenticationManager.authenticate(usernamePassword);
         
-        // Se a password estiver certa, geramos o token JWT
         var token = tokenService.generateToken((User) auth.getPrincipal());
         
-        // Devolvemos o token na resposta
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }

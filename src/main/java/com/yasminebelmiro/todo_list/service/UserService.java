@@ -48,7 +48,9 @@ public class UserService {
 
     public UserResponseDTO update(Long id, UserRequestDTO dto) {
         logger.info("Atualizando usuário com id: " + id);
-        userRepository.findByIdOrThrow(id);
+        User user = userRepository.findByIdOrThrow(id);
+        String encodedPassword = passwordEncoder.encode(dto.password()); 
+        user.setPassword(encodedPassword);
         User existingUser = mapper.toEntity(dto);
         existingUser.setId(id);
         User updatedUser = userRepository.save(existingUser);
