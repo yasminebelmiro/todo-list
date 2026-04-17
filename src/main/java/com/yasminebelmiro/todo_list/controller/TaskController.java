@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/tasks")
 @Validated
 public class TaskController {
-    private TaskService todoService;
+    private final TaskService todoService;
 
     public TaskController(TaskService todoService) {
         this.todoService = todoService;
@@ -58,5 +58,5 @@ public class TaskController {
         return ResponseEntity.ok(todoService.atualizarStatus(id));
     }
 
-    // listar por realizadas //listar não realizadas
+    
 }

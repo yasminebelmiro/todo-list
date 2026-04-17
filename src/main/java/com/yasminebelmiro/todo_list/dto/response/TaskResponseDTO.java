@@ -1,22 +1,25 @@
 package com.yasminebelmiro.todo_list.dto.response;
 
 import com.yasminebelmiro.todo_list.entity.Task;
+import com.yasminebelmiro.todo_list.enums.PriorityEnum;
 
 public record TaskResponseDTO(
         Long id,
-        String nome,
-        String descricao,
-        boolean realizada,
-        Integer prioridade,
-        Long userId) {
+        String name,
+        String description,
+        boolean completed,
+       PriorityEnum priority,
+        Long userId,
+        Long taskListId) {
     public TaskResponseDTO(Task task) {
         this(
                 task.getId(),
-                task.getNome(),
-                task.getDescricao(),
-                task.isRealizada(),
-                task.getPrioridade(),
-                task.getUser().getId());
+                task.getName(),
+                task.getDescription(),
+                task.isCompleted(),
+                task.getPriority(),
+                task.getUser().getId(),
+                task.getTaskList().getId());
     }
 
 }

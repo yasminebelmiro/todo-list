@@ -16,6 +16,7 @@ public interface TaskMapper {
     StatusTaskResponseDTO toStatus(Task task);
 
     @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "taskListId", source = "taskList.id")
     TaskResponseDTO toResponse(Task task);
 
     Task toEntity(TaskRequestDTO dto);

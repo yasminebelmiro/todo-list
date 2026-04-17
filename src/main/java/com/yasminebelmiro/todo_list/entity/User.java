@@ -31,9 +31,9 @@ public class User implements Serializable, UserDetails {
     private String name;
     private String email;
     private String password;
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     @JsonIgnore
-    private List<Task> tasks;
+    private List<TaskList> taskLists;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
